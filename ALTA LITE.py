@@ -1,9 +1,9 @@
 from urllib.error import URLError
-import zipfile,os,sys,re,shutil,urllib.request
+import zipfile,keyboard,os,sys,re,shutil,urllib.request
 print("Загрузка/обновление датабазы...")
 
 #Настройка
-url = '-----' #октуда качать будет датабазу.
+url = 'https://drive.google.com/uc?export=download&id=1kgZ8K5OQJkP2WBoAfq-4n9ARHrfoeL-M' #откуда качать будет датабазу.
 
 try:
     urllib.request.urlretrieve(url, "Base.zip")
@@ -212,7 +212,7 @@ def infomain(pla):
                 print(" Hardest>  " + str(hh) + "pp", end=" ")
                 hh = hh.split(":")
                 return hh[0]
-print("\nALTA LITE v1.0(suport v3.7_3)")            
+print("\nALTA LITE v1.1(suport v4.0)")            
 plalvlcomm("-ver",infomain(gdplar))
 
 print("\nПосмотр топа игроков нажмите - 1")
@@ -222,21 +222,24 @@ print("Посмотреть что вы прошли - 4")
 print("Поменять игрока - 5(Перезапуск)")
 print("Выход - 6")
 com = 0
+com2 = 0
 while com != "6":
-    com = input(">")
-    match com:
-        case "1":
-            plalvlcomm("-p","0")
-        case "2":
-            plalvlcomm("-l","0")
-        case "3":
-            plalvlcomm("-ver","0")
-        case "4":
-            file = open("Base/"+str(gdplar) + ".altapl", 'r')
-            file.readline()
-            print("ЛВЛ ---- ПП")
-            print(file.read())
-            file.close()
-        case "5":
-            os.remove("plar.ALTAL")
-            sys.exit()
+    com = keyboard.read_key()
+    if com2 != com:
+        match com:
+            case "1":
+                plalvlcomm("-p","0")
+            case "2":
+                plalvlcomm("-l","0")
+            case "3":
+                plalvlcomm("-ver","0")
+            case "4":
+                file = open("Base/"+str(gdplar) + ".altapl", 'r')
+                file.readline()
+                print("ЛВЛ ---- ПП")
+                print(file.read())
+                file.close()
+            case "5":
+                os.remove("plar.ALTAL")
+                sys.exit()
+    com2 = com
