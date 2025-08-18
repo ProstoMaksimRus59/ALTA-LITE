@@ -21,7 +21,7 @@ except URLError:
     print("Ошибка.. автономный режим")
     showerror(title="Ошибка..", message="Нет связи с датабазой,\n(зпущен автономный режим)")
 root = Tk()
-root.title("ALTA LITE v2.0 (suport v4.0)")
+root.title("ALTA LITE v2.0_2 (suport v4.0-4.1_3)")
 root.geometry("680x720")
 root.resizable(False,False)
 root.iconbitmap(r'Resources\\AL.ico')
@@ -502,4 +502,5 @@ stus.place(x=15, y=610,width=330,height=100)
 if no == 0:
     textok['text'] = autoplar
     sttus(autoplar)
+
 root.mainloop()
