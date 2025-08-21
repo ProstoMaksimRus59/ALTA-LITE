@@ -12,16 +12,26 @@ import zipfile,os,sys,re,shutil,urllib.request
 # Еще они доложны быть в папке "Resources"
 #
 #
-showinfo(title="Загрузка датабазы", message="Подождите,\nAlta сразу запусится после загрузки датабазы.")
-url = 'https://drive.google.com/uc?export=download&id=1kgZ8K5OQJkP2WBoAfq-4n9ARHrfoeL-M' #откуда качать будет датабазу.(тут пример ссылки)
-try:
-    urllib.request.urlretrieve(url, "Base.zip")
-    print("Успешно!\n")
-except URLError:
-    print("Ошибка.. автономный режим")
-    showerror(title="Ошибка..", message="Нет связи с датабазой,\n(зпущен автономный режим)")
+def F1():
+    showinfo(title="Загрузка датабазы", message="Подождите,\nAlta сразу запусится после загрузки датабазы.")
+    url = 'https://drive.google.com/uc?export=download&id=1z7XMeIXgCcbODcSNhrlzTJVypxPXaNTF' #откуда качать будет датабазу.(тут пример ссылки)
+    try:
+        urllib.request.urlretrieve(url, "Base.zip")
+        print("Успешно!\n")
+    except URLError:
+        print("Ошибка.. автономный режим")
+        showerror(title="Ошибка..", message="Нет связи с датабазой,\n(зпущен автономный режим)")
+F1()
+def F5():
+    showinfo(title="Загрузка датабазы", message="Подождите")
+    url = 'https://drive.google.com/uc?export=download&id=1z7XMeIXgCcbODcSNhrlzTJVypxPXaNTF' #откуда качать будет датабазу.(тут пример ссылки)
+    try:
+        urllib.request.urlretrieve(url, "Base.zip")
+        showinfo(title="Загрузка датабазы", message="Успешно!")
+    except URLError:
+        showinfo(title="Загрузка датабазы", message="ошибка")
 root = Tk()
-root.title("ALTA LITE v2.0_2 (suport v4.0-4.1_3)")
+root.title("ALTA LITE v2.1 (suport v4.1_3)")
 root.geometry("680x720")
 root.resizable(False,False)
 root.iconbitmap(r'Resources\\AL.ico')
@@ -321,7 +331,7 @@ def up():
      textout.place(y = 30, x = 370,width=300,height=680)
      textoutt.delete(0, END)
      textoutt.insert(0,''.join(fullsrol))
-     while target > 53:
+     while target > 55:
           target = target - 68
           down()
 def down():
@@ -449,7 +459,7 @@ e1 = Button(root,
 
 e1.place(x=100, y=140, width=250)
 e2 = Button(root,
-           text= "Топ (ver) лвлов"
+           text= "Топ (тек) лвлов"
            ,command = topver
            ,font="Impact 20"
            ,bg = 'white'
@@ -459,7 +469,7 @@ e2 = Button(root,
 
 e2.place(x=100, y=220, width=250)
 e3 = Button(root,
-           text= "Топ (всех) лвлов"
+           text= "Топ future лвлов"
            ,command = toplvl
            ,font="Impact 20"
            ,bg = 'white'
@@ -497,7 +507,15 @@ e6 = Button(root,
 e6.place(x=335, y=460, width=35)
 e4.place(x=100, y=380, width=250)
 stus = Label(font="Ariral 10",text = "...")
-
+e5 = Button(root,
+           text= "F5"
+           ,command = F5
+           ,font="Impact 20"
+           ,bg = 'white'
+           ,activebackground="gray"
+           ,activeforeground="white"
+           )
+e5.place(x=10, y=200)
 stus.place(x=15, y=610,width=330,height=100)
 if no == 0:
     textok['text'] = autoplar
