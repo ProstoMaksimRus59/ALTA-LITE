@@ -30,8 +30,17 @@ def F5():
         showinfo(title="Загрузка датабазы", message="Успешно!")
     except URLError:
         showinfo(title="Загрузка датабазы", message="ошибка")
+    try:
+        shutil.rmtree("Base")
+    except FileNotFoundError:
+        print
+    try:
+        zip = zipfile.ZipFile('Base.zip', 'r')
+    except FileNotFoundError:
+        sys.exit()
+    zip.extractall('')
 root = Tk()
-root.title("ALTA LITE v2.1 (suport v4.1_3)")
+root.title("ALTA LITE v2.2 (suport v4.1_3)")
 root.geometry("680x720")
 root.resizable(False,False)
 root.iconbitmap(r'Resources\\AL.ico')
