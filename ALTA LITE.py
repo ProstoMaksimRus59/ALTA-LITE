@@ -1,6 +1,6 @@
-import os
-import re
-import shutil
+import os #Говно код сделанный быстро чтобы не обучать людей пользоватся консолью - умеет только показывать статистику подобие офф листов (например поинтеркрейта).
+import re #+ может сама качать датабазу.
+import shutil #Этот недо gui совместим начиная версии алты v3.4..
 import sys
 from tkinter import *
 from tkinter import scrolledtext
@@ -12,35 +12,39 @@ import zipfile,os,sys,re,shutil,urllib.request
 # Еще они доложны быть в папке "Resources"
 #
 #
+def urldata():
+    return 'https://drive.google.com/uc?export=download&id=1z7XMeIXgCcbODcSNhrlzTJVypxPXaNTF' #откуда качать будет датабазу.(тут пример ссылки)
 def F1():
     showinfo(title="Загрузка датабазы", message="Подождите,\nAlta сразу запусится после загрузки датабазы.")
-    url = 'https://drive.google.com/uc?export=download&id=1z7XMeIXgCcbODcSNhrlzTJVypxPXaNTF' #откуда качать будет датабазу.(тут пример ссылки)
     try:
-        urllib.request.urlretrieve(url, "Base.zip")
+        urllib.request.urlretrieve(urldata(), "Base.zip")
         print("Успешно!\n")
+        try:
+            shutil.rmtree('Base')
+        except FileNotFoundError:
+            print
     except URLError:
         print("Ошибка.. автономный режим")
         showerror(title="Ошибка..", message="Нет связи с датабазой,\n(зпущен автономный режим)")
 F1()
-def F5():
+def F5(): #А как аргументы пихать в tk??? я в этом не силен
     showinfo(title="Загрузка датабазы", message="Подождите")
-    url = 'https://drive.google.com/uc?export=download&id=1z7XMeIXgCcbODcSNhrlzTJVypxPXaNTF' #откуда качать будет датабазу.(тут пример ссылки)
     try:
-        urllib.request.urlretrieve(url, "Base.zip")
+        urllib.request.urlretrieve(urldata(), "Base.zip")
+        try:
+            shutil.rmtree('Base')
+        except FileNotFoundError:
+            print
+        try:
+            zip = zipfile.ZipFile('Base.zip', 'r')
+        except FileNotFoundError:
+            sys.exit()
+        zip.extractall('')
         showinfo(title="Загрузка датабазы", message="Успешно!")
     except URLError:
         showinfo(title="Загрузка датабазы", message="ошибка")
-    try:
-        shutil.rmtree("Base")
-    except FileNotFoundError:
-        print
-    try:
-        zip = zipfile.ZipFile('Base.zip', 'r')
-    except FileNotFoundError:
-        sys.exit()
-    zip.extractall('')
 root = Tk()
-root.title("ALTA LITE v2.2 (suport v4.1_3)")
+root.title("ALTA LITE v2.3 (suport v5.1)")
 root.geometry("680x720")
 root.resizable(False,False)
 root.iconbitmap(r'Resources\\AL.ico')
@@ -89,15 +93,18 @@ def beat():
     textouto.delete(0, END)
     textouto.insert(0,beatt)
 
-def top(data,pp,target): #Делает топ
+def top(data,pp,target,idlvl): #Делает топ
     superdata = []
     datapp = ([])
     cont = 0
     for d in data:
         pp1 = float(pp[cont])
-        datapp.append((d,pp1))
+        if idlvl == '':
+            datapp.append((d,pp1))
+        else:
+            datapp.append((d,pp1,idlvl[cont]))
         cont = cont + 1
-    datapp = sorted(datapp, key=lambda datapp: datapp[-1], reverse=True)
+    datapp = sorted(datapp, key=lambda datapp: datapp[1], reverse=True)
     cont = 1
     for printtop in datapp:
         print(printtop)
@@ -106,9 +113,12 @@ def top(data,pp,target): #Делает топ
                     superdata.append("топ-" + str(cont),end="\n")
                     return 1
                 if target == "0":
+                    superdata.append("#########################################\n")
                     superdata.append("Топ-" + str(cont))
                     superdata.append(" " + str(printtop[0]))
                     superdata.append("\n pp:" + str(printtop[1]) + '\n')
+                if idlvl != "":
+                    superdata.append("id:" + str(printtop[2]) + '\n')
         cont = cont + 1
     return superdata
 
@@ -123,7 +133,7 @@ def scanallvl(): #Ищет все лвла
     alllvl = []
     alllvl.append(lvls[0].rstrip("\n"))
     while scan != "":
-        if (cout % 8) == 0:
+        if (cout % 9) == 0:
             alllvl.append(scan.rstrip("\n"))
         cout = cout + 1
         scan = lvls[cout]
@@ -145,7 +155,7 @@ def scanerpla(lvl,type):
             return 0
         cout = cout + 1
 
-def infolvl(lvl,setmode):
+def infolvl(lvl,setmode,custom):
     good = 0
     try:
         data = open("Base/lvldatabase.altalvl", 'r')
@@ -156,7 +166,7 @@ def infolvl(lvl,setmode):
     while scan == 0:
         lvlscan = data.readline().rstrip('\n')
         if lvlscan.lower() == lvl.lower():
-            info = 6
+            info = 6 + custom
             while info != 0:
                 info = info - 1
                 lvlinfo = data.readline().rstrip('\n').lower()
@@ -206,7 +216,7 @@ def toperlvl(name):
                 pplvl = []
                 for lvl in safelllvl:
                     if scanerpla(lvl, '2') != "?":
-                        pplvl.append(infolvl(lvl,"0")) #Получает пп
+                        pplvl.append(infolvl(lvl,"0",0)) #Получает пп
                     else:
                         alllvl.remove(lvl)
                 datapp = ([])
@@ -294,7 +304,7 @@ def toppla():
         wfr = plaer.split(".altapl")
         alllvl.append(wfr[0])
         pplvl.append(round(tophelper(plaer)[0])) #Получает пп
-    dad = top(alllvl,pplvl,"0")
+    dad = top(alllvl,pplvl,"0",'')
     print(dad)
     textout = Label(
              text = ''.join(dad)
@@ -309,9 +319,11 @@ def toppla():
 def toplvl():
     alllvl = scanallvl() #Получает все лвла
     pplvl = []
+    idlvl = []
     for lvl in alllvl:
-        pplvl.append(infolvl(lvl,"0")) #Получает пп
-    dad = top(alllvl,pplvl,"0")
+        pplvl.append(infolvl(lvl,"0",0)) #Получает пп
+        idlvl.append(infolvl(lvl,"0",1))
+    dad = top(alllvl,pplvl,"0",idlvl)
     print(dad)
     textout = Label(root
              ,text = ''.join(dad)
@@ -340,8 +352,8 @@ def up():
      textout.place(y = 30, x = 370,width=300,height=680)
      textoutt.delete(0, END)
      textoutt.insert(0,''.join(fullsrol))
-     while target > 55:
-          target = target - 68
+     while target > 75:
+          target = target - 98
           down()
 def down():
     print("ориг")
@@ -372,12 +384,14 @@ def topver():
     alllvl = scanallvl() #Получает все лвла
     safelllvl = scanallvl()
     pplvl = []
+    idlvl = []
     for lvl in safelllvl:
         if scanerpla(lvl, '2') != "?":
-            pplvl.append(infolvl(lvl,"0")) #Получает пп
+            pplvl.append(infolvl(lvl,"0",0))#Получает пп
+            idlvl.append(infolvl(lvl,"0",1))#id
         else:
             alllvl.remove(lvl)
-    dad = top(alllvl,pplvl,"0")
+    dad = top(alllvl,pplvl,"0",idlvl)
     print(dad)
     textout = Label(
              text = ''.join(dad)
