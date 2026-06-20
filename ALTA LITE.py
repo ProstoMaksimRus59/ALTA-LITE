@@ -44,7 +44,7 @@ def F5(): #А как аргументы пихать в tk??? я в этом н�
     except URLError:
         showinfo(title="Загрузка датабазы", message="ошибка")
 root = Tk()
-root.title("ALTA LITE v2.4_1 (suport v5.1)")
+root.title("ALTA LITE v3.0 (suport v6.0)")
 root.geometry("680x720")
 root.resizable(False,False)
 root.iconbitmap(r'Resources\\AL.ico')
@@ -71,14 +71,15 @@ except FileNotFoundError:
 zip.extractall('')
 
 def beat():
+    global textout
+    print(textout)
     name = textok['text']
     if name == "Пусто" or name == "Такого игрока нет базе":
-        textout = Label(text = "<Ник нормальный сюда веди",font="Impact 15",anchor='nw',)
-        textout.place(y = 30, x = 370,width=300,height=680)
-        textoutt.delete(0, END)
-        textoutt.insert(0,"<Ник нормальный сюда веди")
-        textouto.delete(0, END)
-        textouto.insert(0,"<Ник нормальный сюда веди")
+        print("ало")
+        textout.configure(state='normal') 
+        textout.delete('1.0', END)
+        textout.insert(END, "<Ник нормальный сюда веди")
+        textout.configure(state='disabled')
         return 0
     file = open("Base/"+str(name) + ".altapl", 'r')
     file.readline()
@@ -96,17 +97,17 @@ def beat():
             print(lvls)
             print(pp)
             print(beatt[cout])
-            final = final + "#########################################" + "\n" + ( beatt[cout] + "\n")
+            final = final + "###################################" + "\n" + ( beatt[cout] + "\n")
             final = final + str(round(0.85**(cout)*100,1))+ "% дает:" + str(round(int(pp[cout]) * 0.85**(cout),1)) + '\n' #Формула расчета пп))
             cout = cout + 1
     print(final)
     file.close()
-    textout = Label(text = final,font="Impact 10",anchor='n')
-    textout.place(y = 30, x = 370,width=300,height=680)
-    textoutt.delete(0, END)
-    textoutt.insert(0,final)
-    textouto.delete(0, END)
-    textouto.insert(0,final)
+    textout.configure(state='normal',font='Impact 10') 
+    textout.tag_configure("center", justify='center')
+    textout.delete('1.0', END)
+    textout.insert(END, final,("center"))
+    textout.configure(state='disabled')
+
 
 def top(data,pp,target,idlvl): #Делает топ
     superdata = []
@@ -128,7 +129,7 @@ def top(data,pp,target,idlvl): #Делает топ
                     superdata.append("топ-" + str(cont),end="\n")
                     return 1
                 if target == "0":
-                    superdata.append("#########################################\n")
+                    superdata.append("###################################\n")
                     superdata.append("Топ-" + str(cont))
                     superdata.append(" " + str(printtop[0]))
                     superdata.append("\n pp:" + str(printtop[1]) + '\n')
@@ -311,6 +312,7 @@ def sttus(Name):
                 return 1
 
 def toppla():
+    global textout
     Ramdonmane = os.listdir("Base/") #ищет в базе игроков
     Ramdonmane = filter(lambda x: x.endswith('.altapl'), Ramdonmane)
     pplvl = []
@@ -321,16 +323,14 @@ def toppla():
         pplvl.append(round(tophelper(plaer)[0])) #Получает пп
     dad = top(alllvl,pplvl,"0",'')
     print(dad)
-    textout = Label(
-             text = ''.join(dad)
-             ,font="Impact 10"
-             ,anchor='n'
-             )
-    textout.place(y = 30, x = 370,width=300,height=680)
-    textoutt.delete(0, END)
-    textoutt.insert(0,''.join(dad))
-    textouto.delete(0, END)
-    textouto.insert(0,''.join(dad))
+    final = ''
+    for sporka in dad:
+        final = final + sporka 
+    textout.configure(state='normal',font='Impact 10') 
+    textout.tag_configure("center", justify='center')
+    textout.delete('1.0', END)
+    textout.insert(END, final,("center"))
+    textout.configure(state='disabled')
 def toplvl():
     alllvl = scanallvl() #Получает все лвла
     pplvl = []
@@ -339,62 +339,15 @@ def toplvl():
         pplvl.append(infolvl(lvl,"0",0)) #Получает пп
         idlvl.append(infolvl(lvl,"0",1))
     dad = top(alllvl,pplvl,"0",idlvl)
-    print(dad)
-    textout = Label(root
-             ,text = ''.join(dad)
-             ,font="Impact 10"
-             ,anchor='n'
-             )
-    textoutt.delete(0, END)
-    textoutt.insert(0,''.join(dad))
-    textouto.delete(0, END)
-    textouto.insert(0,''.join(dad))
-    textout.place(y = 30, x = 370,width=300,height=680)
+    final = ''
+    for sporka in dad:
+        final = final + sporka 
+    textout.configure(state='normal',font='Impact 10') 
+    textout.tag_configure("center", justify='center')
+    textout.delete('1.0', END)
+    textout.insert(END, final,("center"))
+    textout.configure(state='disabled')
 
-def up():
-     downsrol = textoutt.get()
-     fullsrol = textouto.get()
-     
-     dd = len(downsrol)
-     du = len(fullsrol)
-     print(str(du) + " s " + str(dd))
-     target = du - dd
-     print(target)
-     textout = Label(root
-             ,text = ''.join(fullsrol)
-             ,font="Impact 10"
-             ,anchor='n')
-     textout.place(y = 30, x = 370,width=300,height=680)
-     textoutt.delete(0, END)
-     textoutt.insert(0,''.join(fullsrol))
-     while target > 75*2:
-          target = target - 98*2
-          down()
-def down():
-    print("ориг")
-    print(textoutt.get())
-    srrol = textoutt.get().rsplit(':')
-    srrol.pop(0)
-    srrol.pop(0)
-    print("обрезка")
-    print(srrol)
-    full = []
-    counet = 0
-    for sporka in srrol:
-         if sporka != "":
-            full.append(sporka + ":")
-            print(full)
-            counet = counet + 1
-    print("Рель")
-    print(''.join(full))
-    if counet > 7:
-        textout = Label(root
-             ,text = ''.join(full)
-             ,font="Impact 10"
-             ,anchor='n')
-        textout.place(y = 30, x = 370,width=300,height=680)
-        textoutt.delete(0, END)
-        textoutt.insert(0,''.join(full))
 def topver():
     alllvl = scanallvl() #Получает все лвла
     safelllvl = scanallvl()
@@ -408,16 +361,14 @@ def topver():
             alllvl.remove(lvl)
     dad = top(alllvl,pplvl,"0",idlvl)
     print(dad)
-    textout = Label(
-             text = ''.join(dad)
-             ,font="Impact 10"
-             ,anchor='n'
-             )
-    textout.place(y = 30, x = 370,width=300,height=680)
-    textoutt.delete(0, END)
-    textoutt.insert(0,''.join(dad))
-    textouto.delete(0, END)
-    textouto.insert(0,''.join(dad))
+    final = ''
+    for sporka in dad:
+        final = final + sporka 
+    textout.configure(state='normal',font='Impact 10') 
+    textout.tag_configure("center", justify='center')
+    textout.delete('1.0', END)
+    textout.insert(END, final,("center"))
+    textout.configure(state='disabled')
 img = PhotoImage(file ='Resources\\AL_BG.png')
 L_logo = Label(root, image=img )
 L_logo.pack()
@@ -449,20 +400,13 @@ def deat():
                 )
             stus.place(x=15, y=610,width=330,height=100)
 
-e5 = Button(root,
-           text= "\/"
-           ,command = down
-           ,font="Impact 20"
-           ,bg = 'white'
-           ,activebackground="gray"
-           ,activeforeground="white"
-           )
 
-textout = Label(
-         text = "..."
-         ,font="Impact 20"
-         )
-textout.place(y = 30, x = 370,width=300,height=680)
+textout = scrolledtext.ScrolledText(
+            root,
+            state='disabled',
+            font=("Impact 20",10)
+            )
+textout.place(y = 30, x = 360,width=310,height=680)
 text = Label(root,
              text = "\\/Ник\\/ Сюда пиши  \\/Ник\\/"
              ,font="Impact 20"
@@ -525,24 +469,6 @@ e4 = Button(root,
            ,activeforeground="white"
            )
 
-e5 = Button(root,
-           text= "\/"
-           ,command = down
-           ,font="Impact 20"
-           ,bg = 'white'
-           ,activebackground="gray"
-           ,activeforeground="white"
-           )
-e5.place(x=335, y=545, width=35)
-e6 = Button(root,
-           text= "/\\"
-           ,command = up
-           ,font="Impact 20"
-           ,bg = 'white'
-           ,activebackground="gray"
-           ,activeforeground="white"
-           )
-e6.place(x=335, y=460, width=35)
 e4.place(x=100, y=380, width=250)
 stus = Label(font="Ariral 10",text = "...")
 e5 = Button(root,
