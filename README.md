@@ -11,4 +11,5 @@ ALTA LITE
 >Авто показ на каком месте ваш хардест лвл
 
 **Настройка и сборка пк версии
-https://youtu.be/SoG0P0cJfTI?si=eZHFEqN-Y6-gBTcj
+
+https://youtu.be/SoG0P0cJfTI?si=eZHFEqN-Y6-gBTcj - с 13минуты
