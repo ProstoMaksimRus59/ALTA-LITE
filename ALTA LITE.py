@@ -44,7 +44,7 @@ def F5(): #А как аргументы пихать в tk??? я в этом н�
     except URLError:
         showinfo(title="Загрузка датабазы", message="ошибка")
 root = Tk()
-root.title("ALTA LITE v3.0 (suport v6.0)")
+root.title("ALTA LITE v3.1 (suport v6.5)")
 root.geometry("680x720")
 root.resizable(False,False)
 root.iconbitmap(r'Resources\\AL.ico')
@@ -124,6 +124,8 @@ def top(data,pp,target,idlvl): #Делает топ
     cont = 1
     for printtop in datapp:
         print(printtop)
+        namenotid = printtop[0].split(":")
+        namenotid = namenotid[-1]
         if printtop[1] != 0:
                 if target.lower() == printtop[0].lower():
                     superdata.append("топ-" + str(cont),end="\n")
@@ -131,7 +133,7 @@ def top(data,pp,target,idlvl): #Делает топ
                 if target == "0":
                     superdata.append("###################################\n")
                     superdata.append("Топ-" + str(cont))
-                    superdata.append(" " + str(printtop[0]))
+                    superdata.append(" " + str(namenotid))
                     superdata.append("\n pp:" + str(printtop[1]) + '\n')
                 if idlvl != "":
                     superdata.append("id:" + str(printtop[2]) + '\n')
